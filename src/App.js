@@ -8,7 +8,7 @@ import Login from './Components/Login';
 import Home from './Components/Home';
 
 // import './App.css';
-import Teams from './Components/Teams';
+import TeamsOverview from './Components/TeamsOverview';
 import Layout from './HOC/Layout';
 import Match from './Components/Match';
 
@@ -34,7 +34,7 @@ class App extends Component {
       routes = (
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/teams/' component={Teams} />
+          <Route exact path='/teams/' component={TeamsOverview} />
           <Route exact path='/match/' component={Match} />
         </Switch>
       );
