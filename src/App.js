@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { checkLogin } from './store/actions/authAction'
 import Login from './Components/Login';
+// import Mu_Login from './Components/Mu_Login'
 import Home from './Components/Home';
 
 // import './App.css';
@@ -13,9 +14,9 @@ import Layout from './HOC/Layout';
 import Match from './Components/Match';
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-  }
+  // constructor(props) {
+  //   super(props)
+  // }
 
   componentDidMount() {
     this.props.checkLogin();
@@ -26,6 +27,7 @@ class App extends Component {
     let routes = (
       <Switch>
         <Route exact path='/' component={Login} />
+        {/* <Route exact path='/s' component={Mu_Login} /> */}
         {/* <Redirect to='/' /> */}
       </Switch>
     );

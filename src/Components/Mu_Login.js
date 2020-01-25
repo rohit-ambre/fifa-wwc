@@ -1,10 +1,4 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-
-import { auth } from '../store/actions/authAction'
-
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,11 +10,26 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 // import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Redirect } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { auth } from '../store/actions/authAction'
 
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
-const Styles = theme => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -38,46 +47,41 @@ const Styles = theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-});
+}));
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: ''
-    }
+export default function SignIn() {
+  const classes = useStyles();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const authState = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  // if (authState.authenticated) {
+  //   const redirect = <Redirect to="/" />
+  // }
+  // });
+
+  function formHandler(e) {
+    // e.preventDefault()
+    // this.props.auth(this.state.username, this.state.password);
+    dispatch(auth(username, password))
   }
 
-  onChangeHandler = _e => {
-    this.setState({
-      [_e.target.name]: _e.target.value
-    })
-  }
+  return (
+    <>
+      {authState.authenticated ?
+        <Redirect to="/" /> :
 
-  formHandler = (e) => {
-    e.preventDefault()
-    this.props.auth(this.state.username, this.state.password);
-  }
-
-  render() {
-    const { classes } = this.props;
-    let redirect = null;
-    if (this.props.data.authenticated) {
-      redirect = <Redirect to="/" />
-    }
-    return (
-      <>
-        {redirect}
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               {/* <LockOutlinedIcon /> */}
             </Avatar>
-            <Typography component="h1" variant="h5" >
-              Log in
-            </Typography>
+            <Typography component="h1" variant="h5">
+              Sign in
+        </Typography>
             <form className={classes.form} noValidate type='post'>
               <TextField
                 variant="outlined"
@@ -85,9 +89,9 @@ class Login extends Component {
                 required
                 fullWidth
                 id="username"
-                label="Username"
+                label="Email Address"
                 name="username"
-                onChange={this.onChangeHandler}
+                onChange={(e) => setUsername(e.target.value)}
                 // autoComplete="username"
                 autoFocus
               />
@@ -100,7 +104,7 @@ class Login extends Component {
                 label="Password"
                 type="password"
                 id="password"
-                onChange={this.onChangeHandler}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
               {/* <FormControlLabel
@@ -113,15 +117,15 @@ class Login extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={this.formHandler}
+                onClick={() => formHandler()}
               >
                 Sign In
-              </Button>
+          </Button>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
                     Forgot password?
-                  </Link>
+              </Link>
                 </Grid>
                 <Grid item>
                   <Link href="#" variant="body2">
@@ -134,29 +138,7 @@ class Login extends Component {
           <Box mt={8}>
             <Copyright />
           </Box>
-        </Container>
-      </>
-    )
-  }
-}
-
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+        </Container>}
+    </>
   );
 }
-
-
-const mapStateToProps = state => ({ data: state.auth });
-
-const mapDispatchToProps = dispatch => bindActionCreators({ auth }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(Styles)(Login));

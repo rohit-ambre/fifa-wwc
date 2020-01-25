@@ -24,7 +24,7 @@ export const getTeams = () => {
       url: "https://worldcup.sfg.io/teams/"
     })
       .then(res => {
-        console.log(res.data);
+        console.log('teams', res.data);
         dispatch(teamsSuccessful(res.data))
       })
       .catch(err => console.log(err))
@@ -39,7 +39,7 @@ export const getGroups = () => {
       url: "https://worldcup.sfg.io/teams/group_results"
     })
       .then(res => {
-        console.log(res.data);
+        console.log('groups', res.data);
         dispatch(groupsSuccessful(res.data))
       })
       .catch(err => console.log(err))
